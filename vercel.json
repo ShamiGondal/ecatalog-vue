@@ -1,0 +1,6 @@
+{
+    "rewrites": [
+        { "source": "/ecatalog/:path(.*)", "destination": "https://phplaravel-996806-4363314.cloudwaysapps.com/api/:path" },
+        { "source": "/(.*)", "destination": "/index.html" }
+    ]
+}
