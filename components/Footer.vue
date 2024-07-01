@@ -31,7 +31,7 @@
 
     
     const email = ref('');
-    const phone = ref('');
+    const phone = ref('tel:01227626262');
     const whatsapp = ref('');
     const route = useRoute();
     const router = useRouter();
@@ -39,7 +39,7 @@
 
   
    const fetchmerchantData = async () => {
-  const url = `/ecatalog/merchant/${name}`;
+  const url = `/ecatalog/merchant/superstore`;
 
   try {
     // Make a request to the proxy server

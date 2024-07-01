@@ -505,7 +505,6 @@ export default {
   }
 }
 
-
 .table_data {
   color: #555555;
   text-align: left;
@@ -589,36 +588,22 @@ export default {
 }
 
 .fade1-enter-active,
-.fade1-leave-active {
-  transition: opacity 0.2s, transform 0.2s;
+.fade1-leave-active,
+.fade2-enter-active,
+.fade2-leave-active,
+.fade3-enter-active,
+.fade3-leave-active {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .fade1-enter,
-.fade1-leave-to {
-  opacity: 0;
-  transform: translateX(30px) translateY(20px); /* Adjust the values as needed */
-}
-
-.fade2-enter-active,
-.fade2-leave-active {
-  transition: opacity 0.2s, transform 0.2s;
-}
-
+.fade1-leave-to,
 .fade2-enter,
-.fade2-leave-to {
-  opacity: 0;
-  transform: translateX(-30px) translateY(-20px); /* Adjust the values as needed */
-}
-
-.fade3-enter-active,
-.fade3-leave-active {
-  transition: opacity 0.2s, transform 0.2s;
-}
-
+.fade2-leave-to,
 .fade3-enter,
 .fade3-leave-to {
   opacity: 0;
-  transform: translateX(30px) translateY(20px); /* Adjust the values as needed */
+  transform: translateX(-100%);
 }
 
 .dropdown-icon.open {
@@ -660,6 +645,7 @@ export default {
   margin-right: 7px;
   color: black;
 }
+
 .sub_b {
   font-size: 16px;
   color: black;
