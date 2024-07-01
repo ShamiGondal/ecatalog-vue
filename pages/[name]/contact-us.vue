@@ -228,7 +228,7 @@
     const merchantId = ref('');
     
  const fetchData = async () => {
-    const url = `/ecatalog/contact-us?merchantId=${merchantId.value}`;
+    const url = `/ecatalog/contact-us?merchantId=35`;
 
     try {
         // Make a request to the proxy server

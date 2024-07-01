@@ -16,11 +16,11 @@
             <div  v-if="about[0] && about[0].content_page == 'ABOUT'" class="paragraph mt-2">
                 {{ about[0].content_text }}
             </div>
-            <!-- <p v-if="about[0] && about[0].content_page == 'ABOUT'" class="paragraph mt-2">
+            <p v-if="about[0] && about[0].content_page == 'ABOUT'" class="paragraph mt-2">
                 {{ about[0].content_text }}
-            </p> -->
+            </p>
            
-            <!-- <img :src="'https://admin.ecatalog.cloud/'+ dataAbout.merchant_logo" alt="trophy" class="mt-6 w-[100%]" /> -->
+            <img :src="'https://admin.ecatalog.cloud/'+ dataAbout.merchant_logo" alt="trophy" class="mt-6 w-[100%]" />
         </div>
     </div>
         <Footer ></Footer>
@@ -51,13 +51,14 @@
     const whatsapp = ref('');
     const merchantId= ref('');
     const fetchData = async () => {
-        const url = `/ecatalog/about-us?merchantId=${merchantId.value}`;
+        console.log(merchantId.value);
+        const url = `/ecatalog/about-us?merchantId=35`;
 
         // Make a request to the proxy server
         await axios.get(url)
             .then((response) => {
                 dataAbout.value = response.data.merchant;
-                intro.value = response.data.merchant.content.filter(content => content.content_page == 'INTRO');
+               // intro.value = response.data.merchant.content.filter(content => content.content_page == 'INTRO');
                 about.value = response.data.merchant.content.filter(content => content.content_page == 'ABOUT');
                 contact.value = response.data.merchant.content.filter(content => content.content_page == 'CONTACT');
                 instagram.value = response.data.merchant.merchant_instagram;
@@ -67,7 +68,7 @@
             })
             .catch((error) => {
                 console.log(error);
-                router.push('/404');
+                //router.push('/404');
             });
     };
 
@@ -80,7 +81,7 @@
                
                 console.log(response)
                 dataMerchant.value = response.data.merchant;
-                merchantId.value = response.data.merchant.merchant_id;
+                // merchantId.value = response.data.merchant.merchant_id;
 
                 
 
@@ -88,7 +89,7 @@
             })
             .catch((error) => {
                 console.log(error);
-                router.push('/404');
+               // router.push('/404');
             });
     };
     onMounted( async() => {
