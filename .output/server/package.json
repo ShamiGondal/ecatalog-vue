@@ -5,6 +5,12 @@
   "private": true,
   "dependencies": {
     "@babel/parser": "7.24.1",
+    "@fortawesome/fontawesome-svg-core": "6.5.2",
+    "@fortawesome/free-solid-svg-icons": "6.5.2",
+    "@fortawesome/vue-fontawesome": "3.0.8",
+    "@headlessui/vue": "1.7.22",
+    "@tanstack/virtual-core": "3.8.1",
+    "@tanstack/vue-virtual": "3.8.1",
     "@unhead/dom": "1.9.4",
     "@unhead/shared": "1.9.4",
     "@unhead/ssr": "1.9.4",
@@ -17,7 +23,7 @@
     "@vue/runtime-dom": "3.4.21",
     "@vue/server-renderer": "3.4.21",
     "@vue/shared": "3.4.21",
-    "@vueform/multiselect": "2.6.7",
+    "@vueform/multiselect": "2.6.8",
     "asynckit": "0.4.0",
     "axios": "1.6.8",
     "combined-stream": "1.0.8",
@@ -40,6 +46,7 @@
     "unhead": "1.9.4",
     "vue": "3.4.21",
     "vue-bundle-renderer": "2.0.0",
+    "vue-devtools-stub": "0.1.0",
     "vue-router": "4.3.0",
     "vue3-carousel": "0.3.3"
   }

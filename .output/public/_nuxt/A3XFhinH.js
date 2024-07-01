@@ -1,1 +1,0 @@
-import{_ as e,v as t,t as s,x as o}from"./CyUyOWhW.js";const c={},n={class:"md:container md:mx-auto flex flex-col h-[100vh] sub items-center justify-center"},a=o("h1",{class:"menu-3",style:{"font-size":"24px !important"}},"E - Catalog",-1),r=[a];function _(i,d){return s(),t("div",n,r)}const f=e(c,[["render",_]]);export{f as default};
