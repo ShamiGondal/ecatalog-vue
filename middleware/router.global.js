@@ -2,10 +2,14 @@ export default defineNuxtRouteMiddleware((to, from) => {
   console.log('Middleware executed');
   console.log('Current route:', to.path);
 
-  const validRoutes = ['contact-us', 'about-us', 'e-catalog', 'product-list', 'product'];
+  const validRoutes = ['/','contact-us', 'about-us', 'e-catalog', 'product-list', 'product'];
   const dynamicRoute = to.params.name;
   const pathSegments = to.path.split('/').filter(Boolean);
 
+  if (to.path === '/') {
+    // Redirect root level route to /product-list
+    return navigateTo('/product');
+  }
   if (pathSegments.length === 1) {
     // Root level routes
     console.log('Valid root level route');
