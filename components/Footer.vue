@@ -38,27 +38,32 @@
     const name = route.params.name; // Access the "name" parameter
 
   
-    const fetchmerchantData = async () => {
-        const url = `/ecatalog/merchant/${name}`;
+   const fetchmerchantData = async () => {
+  const url = `/ecatalog/merchant/${name}`;
 
-        // Make a request to the proxy server
-        await axios.get(url)
-            .then((response) => {
-               
-                console.log(response)
-                // email.value = 'mailto:' + response.data.merchant.merchant_email;
-                // phone.value = 'tel:' + response.data.merchant.merchant_phone;
-                // whatsapp.value =  response.data.merchant.merchant_whatsapp;
+  try {
+    // Make a request to the proxy server
+    const response = await axios.get(url);
+    console.log(response);
 
-                
+    const merchant = response.data?.merchant;
 
-               
-            })
-            .catch((error) => {
-                console.log(error);
-                router.push('/404');
-            });
-    };
+    if (merchant) {
+      email.value = merchant.merchant_email ? `mailto:${merchant.merchant_email}` : '';
+      phone.value = merchant.merchant_phone ? `tel:${merchant.merchant_phone}` : '';
+      whatsapp.value = merchant.merchant_whatsapp || '';
+    } else {
+      console.warn('Merchant data is missing or undefined.');
+      email.value = '';
+      phone.value = '';
+      whatsapp.value = '';
+    }
+  } catch (error) {
+    console.log(error);
+    router.push('/404');
+  }
+};
+
     onMounted( async() => {
         await fetchmerchantData();
     });
