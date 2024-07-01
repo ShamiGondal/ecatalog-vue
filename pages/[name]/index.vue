@@ -117,7 +117,7 @@ const handleModalOpened = (isOpen) => {
   console.log("Modal opened status:", isOpen);
 };
 const fetchData = async () => {
-  const url = `/ecatalog/merchant/${name}`;
+  const url = `/ecatalog/merchant/superstore`;
 
   try {
     // Make a request to the proxy server

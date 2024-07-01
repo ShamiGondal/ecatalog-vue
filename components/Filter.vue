@@ -161,6 +161,7 @@
                 :value="option"
                 v-model="selectedcategories"
                 class="popup_checkbox2"
+                :disabled="selectedcategories.length >= 3 && !selectedcategories.includes(option)"
               />
               {{ option.category_name }}
             </label>
@@ -186,6 +187,7 @@
                 :value="option"
                 v-model="selectedmaterials"
                 class="popup_checkbox2"
+                :disabled="selectedmaterials.length >= 3 && !selectedmaterials.includes(option)"
               />
               {{ option }}
             </label>
@@ -210,6 +212,7 @@
                 :value="option"
                 v-model="selectedcolors"
                 class="popup_checkbox2"
+                :disabled="selectedcolors.length >= 3 && !selectedcolors.includes(option)"
               />
               {{ option }}
             </label>
