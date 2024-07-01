@@ -226,50 +226,94 @@
     const normalBranch = ref([]);
     const googleMapEmbedUrl = ref('');
     const merchantId = ref('');
-    const fetchData = async () => {
-        const url = `/ecatalog/contact-us?merchantId=${merchantId.value}`;
+    
+ const fetchData = async () => {
+    const url = `/ecatalog/contact-us?merchantId=${merchantId.value}`;
 
+    try {
         // Make a request to the proxy server
-        await axios.get(url)
-            .then((response) => {
-                // Handle the response from the proxy server
-                dataMerchant.value = response.data.merchant;
+        const response = await axios.get(url);
+        console.log(response);
 
-                // Filter branches with branch_main equal to 1
-                branchMain.value = response.data.branch.filter(branch => branch.branch_main === '1');
-                normalBranch.value = response.data.branch.filter(branch => branch.branch_main !== '1');
-                if (branchMain.value.length > 0 && branchMain.value[0].branch_googlemap) {
-                googleMapEmbedUrl.value = branchMain.value[0].branch_googlemap;
+        // Safely access merchant and branch data
+        const merchant = response.data?.merchant;
+        const branches = response.data?.branch;
+
+        // Assign merchant data if available
+        if (merchant) {
+            dataMerchant.value = merchant;
+        } else {
+            console.warn('Merchant data is missing or undefined.');
+            dataMerchant.value = {};
+            // Optionally, set an error message or state
+            // errorMessage.value = 'Merchant data not available';
+        }
+
+        // Assign and filter branch data if available and is an array
+        if (Array.isArray(branches)) {
+            branchMain.value = branches.filter(branch => branch.branch_main === '1');
+            normalBranch.value = branches.filter(branch => branch.branch_main !== '1');
+        } else {
+            console.warn('Branch data is missing or not an array.');
+            branchMain.value = [];
+            normalBranch.value = [];
+            // Optionally, set an error message or state
+            // errorMessage.value = 'Branch data not available';
+        }
+
+        // Set Google Map Embed URL based on branchMain
+        if (branchMain.value.length > 0 && branchMain.value[0].branch_googlemap) {
+            googleMapEmbedUrl.value = branchMain.value[0].branch_googlemap;
+        } else {
+            // Fallback Google Map Embed URL
+            googleMapEmbedUrl.value = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3982.6653662204766!2d101.6868533141574!3d3.1390037976981394!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc360e3b68333d%3A0x44fc9748b741a688!2sKuala%20Lumpur%2C%20Federal%20Territory%20of%20Kuala%20Lumpur%2C%20Malaysia!5e0!3m2!1sen!2s!4v1619001326925!5m2!1sen!2s';
+            // Optionally, set an error message or state
+            // errorMessage.value = 'No main branch with a Google map URL found';
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        // Optionally, set an error message or state
+        // errorMessage.value = 'Failed to fetch contact data';
+        router.push('/404');
+    }
+};
+
+
+const fetchmerchantData = async () => {
+    const url = `/ecatalog/merchant/${name}`;
+
+    try {
+        // Make a request to the proxy server
+        const response = await axios.get(url);
+        console.log(response);
+
+        // Safely access merchant data
+        const merchant = response.data?.merchant;
+
+        if (merchant) {
+            if (merchant.merchant_id) {
+                merchantId.value = merchant.merchant_id;
             } else {
-                
-                googleMapEmbedUrl.value = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3982.6653662204766!2d101.6868533141574!3d3.1390037976981394!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc360e3b68333d%3A0x44fc9748b741a688!2sKuala%20Lumpur%2C%20Federal%20Territory%20of%20Kuala%20Lumpur%2C%20Malaysia!5e0!3m2!1sen!2s!4v1619001326925!5m2!1sen!2s';
+                console.warn('merchant_id is missing.');
+                merchantId.value = null;
             }
-            })
-            .catch((error) => {
-                console.log(error);
-                router.push('/404');
-            });
-    };
+            // Optionally handle other merchant properties
+            dataMerchant.value = merchant;
+        } else {
+            console.warn('Merchant data is missing or undefined.');
+            merchantId.value = null;
+            dataMerchant.value = {}; // or handle this according to your application logic
+        }
+    } catch (error) {
+        console.error('Error fetching merchant data:', error);
+        // Optionally set error states or messages
+        // errorMessage.value = 'Failed to fetch merchant data';
+        router.push('/404');
+    }
+};
 
-    const fetchmerchantData = async () => {
-        const url = `/ecatalog/merchant/${name}`;
 
-        // Make a request to the proxy server
-        await axios.get(url)
-            .then((response) => {
-               
-                console.log(response)
-                merchantId.value = response.data.merchant.merchant_id;
-
-                
-
-               
-            })
-            .catch((error) => {
-                console.log(error);
-                router.push('/404');
-            });
-    };
+    
     onMounted( async() => {
         await fetchmerchantData();
         await fetchData();

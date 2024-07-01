@@ -46,9 +46,9 @@
             .then((response) => {
                
                 console.log(response)
-                email.value = 'mailto:' + response.data.merchant.merchant_email;
-                phone.value = 'tel:' + response.data.merchant.merchant_phone;
-                whatsapp.value =  response.data.merchant.merchant_whatsapp;
+                // email.value = 'mailto:' + response.data.merchant.merchant_email;
+                // phone.value = 'tel:' + response.data.merchant.merchant_phone;
+                // whatsapp.value =  response.data.merchant.merchant_whatsapp;
 
                 
 

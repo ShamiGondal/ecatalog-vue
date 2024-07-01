@@ -16,6 +16,7 @@
         :description="AboutUs"
         title="product"
         :image="dataMerchant.merchant_logo"
+       
       >
       </Company>
       <div
@@ -118,50 +119,58 @@ const handleModalOpened = (isOpen) => {
 const fetchData = async () => {
   const url = `/ecatalog/merchant/${name}`;
 
-  // Make a request to the proxy server
-  await axios
-    .get(url)
-    .then((response) => {
-      console.log(response);
-      dataSlideshows.value = response.data.slideshow;
-      dataMerchant.value = response.data.merchant;
-      const aboutContent = response.data.content.find(content => content.content_page === "INTRO");
+  try {
+    // Make a request to the proxy server
+    const response = await axios.get(url);
+    console.log(response);
 
-if (aboutContent) {
-  AboutUs.value = aboutContent.content_text;
-  
-} else {
-  AboutUs.value = "About..."
-}      // Join the modified values with spaces and append the additional text
-      const title = capitalizeFirstLetter(dataMerchant.value.merchant_name);
+    // Safely access response data
+    const slideshow = response.data?.slideshow;
+    const merchant = response.data?.merchant;
+    const content = response.data?.content;
 
-      const ogTitle = title;
+    // Assign values to reactive data
+    dataSlideshows.value = slideshow || [];
+    dataMerchant.value = merchant || {};
 
-      const description = "-";
+    // Check if content is an array and find the about content
+    let aboutContent;
+    if (Array.isArray(content)) {
+      aboutContent = content.find(content => content.content_page === "INTRO");
+    }
 
-      const ogDescription = description;
+    // Set AboutUs content
+    AboutUs.value = aboutContent?.content_text || "About...";
 
-      let ogImageUrl = null;
+    // Prepare SEO metadata
+    const title = capitalizeFirstLetter(merchant?.merchant_name || "Unknown Merchant");
+    const ogTitle = title;
+    const description = merchant?.merchant_description || "-";
+    const ogDescription = description;
 
-      if (dataMerchant.value.merchant_logo != null) {
-        ogImageUrl = `https://admin.ecatalog.cloud/${dataMerchant.value.merchant_logo}`;
-      }
-      if (ogImageUrl) {
-        updateFavicon(ogImageUrl);
-      }
-      useSeoMeta({
-        title,
-        ogTitle,
-        description,
-        ogDescription,
-        ogImage: ogImageUrl,
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-      router.push("/404");
+    let ogImageUrl = null;
+    if (merchant?.merchant_logo) {
+      ogImageUrl = `https://admin.ecatalog.cloud/${merchant.merchant_logo}`;
+    }
+    if (ogImageUrl) {
+      updateFavicon(ogImageUrl);
+    }
+
+    // Use SEO meta
+    useSeoMeta({
+      title,
+      ogTitle,
+      description,
+      ogDescription,
+      ogImage: ogImageUrl,
     });
+  } catch (error) {
+    console.log(error);
+    // Navigate to the 404 page
+    router.push("/404");
+  }
 };
+
 const updateFavicon = (url) => {
   let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
   link.type = 'image/x-icon';

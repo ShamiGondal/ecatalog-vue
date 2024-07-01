@@ -214,54 +214,61 @@ const calculateMinMaxRegularPrice = (products) => {
     return `RM ${minPrice}`;
   }
 };
+
 const fetchmerchantData = async () => {
   const url = `/ecatalog/merchant/${name}`;
 
-  // Make a request to the proxy server
-  await axios
-    .get(url)
-    .then((response) => {
-      console.log(response);
-      dataSlide.value = response.data.slideshow;
-      dataMerchant.value = response.data.merchant;
-      const aboutContent = response.data.content.find(
-        (content) => content.content_page === "INTRO"
-      );
+  try {
+    // Make a request to the proxy server
+    const response = await axios.get(url);
+    console.log(response);
 
-      if (aboutContent) {
-        AboutUs.value = aboutContent.content_text;
-      } else {
-        AboutUs.value = "About...";
-      }
+    // Safely access slideshow and merchant data
+    dataSlide.value = response.data?.slideshow || [];
+    dataMerchant.value = response.data?.merchant || {};
 
-      // Join the modified values with spaces and append the additional text
-      const title = dataMerchant.value.merchant_name;
+    // Safely access content and find INTRO content
+    const contentArray = response.data?.content;
+    let aboutContent = null;
 
-      const ogTitle = title;
+    if (Array.isArray(contentArray)) {
+      aboutContent = contentArray.find((content) => content.content_page === "INTRO");
+    } else {
+      console.warn('Content data is missing or not an array.');
+      // Optionally, handle missing or invalid content data
+      // errorMessage.value = 'Content data not available';
+    }
 
-      const description = "-";
+    // Set AboutUs value based on found content
+    AboutUs.value = aboutContent ? aboutContent.content_text : "About...";
 
-      const ogDescription = description;
+    // Set SEO meta tags
+    const title = dataMerchant.value.merchant_name || "Default Title";
+    const ogTitle = title;
+    const description = "-";
+    const ogDescription = description;
 
-      let ogImageUrl;
+    let ogImageUrl = null;
+    if (dataMerchant.value.merchant_logo) {
+      ogImageUrl = `https://phplaravel-996806-4363314.cloudwaysapps.com/${dataMerchant.value.merchant_logo}`;
+    }
 
-      if (dataMerchant.value.merchant_logo != null) {
-        ogImageUrl = `https://phplaravel-996806-4363314.cloudwaysapps.com/${dataMerchant.value.merchant_logo}`;
-      }
-
-      useSeoMeta({
-        title,
-        ogTitle,
-        description,
-        ogDescription,
-        ogImage: ogImageUrl,
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-      router.push("/404");
+    useSeoMeta({
+      title,
+      ogTitle,
+      description,
+      ogDescription,
+      ogImage: ogImageUrl,
     });
+  } catch (error) {
+    console.error("Error fetching merchant data:", error);
+    // Optionally, set an error message or state
+    // errorMessage.value = 'Failed to fetch merchant data';
+    router.push("/404");
+  }
 };
+
+
 onMounted(() => {
   fetchmerchantData();
   if (route.query.category) {
