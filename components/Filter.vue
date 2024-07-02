@@ -32,7 +32,7 @@
     id="modal"
     v-if="isModalOpen"
   >
-    <div class="bg-white rounded-lg p-4 px-8  transition-all duration-300 my_filters_modal">
+    <div class="bg-white rounded-lg p-4 px-5  transition-all duration-300 my_filters_modal">
       <button
         class="top-0 text-gray-600"
         style="
