@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
   if (to.path === '/') {
     // Redirect root level route to /product-list
-    return navigateTo('/product');
+    return navigateTo('/superstore');
   }
   if (pathSegments.length === 1) {
     // Root level routes

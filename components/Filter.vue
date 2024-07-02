@@ -32,14 +32,14 @@
     id="modal"
     v-if="isModalOpen"
   >
-    <div class="bg-white rounded-lg p-4 px-7  transition-all duration-300 my_filters_modal">
+    <div class="bg-white rounded-lg p-4 px-8  transition-all duration-300 my_filters_modal">
       <button
         class="top-0 text-gray-600"
         style="
           float: right;
           font-size: 30px;
           margin-top: -5px;
-          z-index: 999 !important;
+          z-index:  !important;
           overflow: hidden;
         "
         @click="closeModal"
@@ -590,6 +590,7 @@ export default {
         margin-top: 90px;
         margin-bottom: 100px;
         height: 500px;
+         z-index: 1001; 
     }
 }
 @media (max-width: 768px) {
@@ -597,6 +598,7 @@ export default {
         margin-top: 80px;
         margin-bottom: 80px;
         height: 480px;
+         z-index: 1001; 
     }
 }
 

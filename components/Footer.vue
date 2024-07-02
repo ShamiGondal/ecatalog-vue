@@ -1,10 +1,11 @@
 <template>
   <div
-    class="footer fixed bottom-0 bg-white w-full md:w-[100%] flex flex-col mt-3"
+    class="footer  fixed bottom-0 bg-white w-full md:w-[100%] flex flex-col mt-3"
     style="
       position: sticky;
       box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15),
-        0px -1px 3px rgba(0, 0, 0, 0.15);
+        0px -1px 3px rgba(0, 0, 0, 0.15),
+        ;
     "
   >
     <div class="flex items-start justify-around">
@@ -78,5 +79,6 @@
         line-height:auto;
         border-style:hidden;
         outline:none;
+
     }
 </style>
