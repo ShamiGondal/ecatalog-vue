@@ -226,9 +226,46 @@
     const normalBranch = ref([]);
     const googleMapEmbedUrl = ref('');
     const merchantId = ref('');
+    console.log("catalgo ", merchantId)
     
+    var merchant;
+
+
+const fetchmerchantData = async () => {
+    const url = `/ecatalog/merchant/${name}`;
+
+    try {
+        // Make a request to the proxy server
+        const response = await axios.get(url);
+        console.log(response);
+
+        // Safely access merchant data
+        merchant = response.data?.merchant;
+
+        if (merchant) {
+            if (merchant.merchant_id) {
+                merchantId.value = merchant.merchant_id;
+            } else {
+                console.warn('merchant_id is missing.');
+                merchantId.value = null;
+            }
+            // Optionally handle other merchant properties
+            dataMerchant.value = merchant;
+        } else {
+            console.warn('Merchant data is missing or undefined.');
+            merchantId.value = null;
+            dataMerchant.value = {}; // or handle this according to your application logic
+        }
+    } catch (error) {
+        console.error('Error fetching merchant data:', error);
+        // Optionally set error states or messages
+        // errorMessage.value = 'Failed to fetch merchant data';
+        router.push('/404');
+    }
+};
+
  const fetchData = async () => {
-    const url = `/ecatalog/contact-us?merchantId=35`;
+    const url = `/ecatalog/contact-us?merchantId=${merchant.merchant_id}`;
 
     try {
         // Make a request to the proxy server
@@ -274,40 +311,6 @@
         console.error('Error fetching data:', error);
         // Optionally, set an error message or state
         // errorMessage.value = 'Failed to fetch contact data';
-        router.push('/404');
-    }
-};
-
-
-const fetchmerchantData = async () => {
-    const url = `/ecatalog/merchant/${name}`;
-
-    try {
-        // Make a request to the proxy server
-        const response = await axios.get(url);
-        console.log(response);
-
-        // Safely access merchant data
-        const merchant = response.data?.merchant;
-
-        if (merchant) {
-            if (merchant.merchant_id) {
-                merchantId.value = merchant.merchant_id;
-            } else {
-                console.warn('merchant_id is missing.');
-                merchantId.value = null;
-            }
-            // Optionally handle other merchant properties
-            dataMerchant.value = merchant;
-        } else {
-            console.warn('Merchant data is missing or undefined.');
-            merchantId.value = null;
-            dataMerchant.value = {}; // or handle this according to your application logic
-        }
-    } catch (error) {
-        console.error('Error fetching merchant data:', error);
-        // Optionally set error states or messages
-        // errorMessage.value = 'Failed to fetch merchant data';
         router.push('/404');
     }
 };

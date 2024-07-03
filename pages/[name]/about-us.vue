@@ -39,7 +39,7 @@
     const route = useRoute();
     const router = useRouter();
     const name = route.params.name; // Access the "name" parameter
-    const dataMerchant = ref([])
+    var dataMerchant = ref([])
     // Initialize data
     const dataAbout = ref([]);
     const intro = ref([]);
@@ -50,9 +50,34 @@
     const tiktok = ref('');
     const whatsapp = ref('');
     const merchantId= ref('');
-    const fetchData = async () => {
+    
+    var merchant;
+
+    const fetchmerchantData = async () => {
+        const url = `/ecatalog/merchant/${name}`;
+
+        // Make a request to the proxy server
+        await axios.get(url)
+            .then((response) => {
+               
+                console.log(response)
+                merchant= response.data.merchant;
+                dataMerchant.value = response.data.merchant;
+                merchantId.value = response.data.merchant.merchant_id;
+
+                
+
+               
+            })
+            .catch((error) => {
+                console.log(error);
+               // router.push('/404');
+            });
+    };
+    
+       const fetchData = async () => {
         console.log(merchantId.value);
-        const url = `/ecatalog/about-us?merchantId=35`;
+        const url = `/ecatalog/about-us?merchantId=${merchant.merchant_id }`;
 
         // Make a request to the proxy server
         await axios.get(url)
@@ -71,27 +96,7 @@
                 //router.push('/404');
             });
     };
-
-    const fetchmerchantData = async () => {
-        const url = `/ecatalog/merchant/${name}`;
-
-        // Make a request to the proxy server
-        await axios.get(url)
-            .then((response) => {
-               
-                console.log(response)
-                dataMerchant.value = response.data.merchant;
-                // merchantId.value = response.data.merchant.merchant_id;
-
-                
-
-               
-            })
-            .catch((error) => {
-                console.log(error);
-               // router.push('/404');
-            });
-    };
+    
     onMounted( async() => {
         await fetchmerchantData();
         await fetchData();

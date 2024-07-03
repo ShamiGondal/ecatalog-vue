@@ -121,8 +121,41 @@ const selectedEcatalog = ref(null);
 const dataMerchant = ref([]);
 const loading = ref(true);
 
+
+const selectEcatalog = (ecatalog) => {
+  selectedEcatalog.value = ecatalog;
+};
+
+ var merchant;
+const fetchmerchantData = async () => {
+  const url = `/ecatalog/merchant/${name}`;
+
+  try {
+    // Make a request to the proxy server
+    const response = await axios.get(url);
+    console.log(response);
+
+    // Safely access merchant data
+    merchant = response.data?.merchant;
+
+    if (merchant) {
+      dataMerchant.value = merchant;
+      merchantId.value = merchant.merchant_id;
+    } else {
+      // Handle case where merchant data is missing or undefined
+      console.warn("Merchant data is missing or undefined.");
+      dataMerchant.value = {};
+      merchantId.value = null; // Or handle this according to your application logic
+    }
+  } catch (error) {
+    console.error("Error fetching merchant data:", error);
+    router.push("/404");
+  }
+};
+
+
 const fetchData = async () => {
-  const url = `/ecatalog/ecatalog?merchantId=35`;
+  const url = `/ecatalog/ecatalog?merchantId=${merchant.merchant_id}`;
 
   // Show loading state
   loading.value = true;
@@ -148,36 +181,6 @@ const fetchData = async () => {
   } finally {
     // Ensure loading state is set to false in both success and error cases
     loading.value = false;
-  }
-};
-
-const selectEcatalog = (ecatalog) => {
-  selectedEcatalog.value = ecatalog;
-};
-
-const fetchmerchantData = async () => {
-  const url = `/ecatalog/merchant/superstore`;
-
-  try {
-    // Make a request to the proxy server
-    const response = await axios.get(url);
-    console.log(response);
-
-    // Safely access merchant data
-    const merchant = response.data?.merchant;
-
-    if (merchant) {
-      dataMerchant.value = merchant;
-      merchantId.value = merchant.merchant_id;
-    } else {
-      // Handle case where merchant data is missing or undefined
-      console.warn("Merchant data is missing or undefined.");
-      dataMerchant.value = {};
-      merchantId.value = null; // Or handle this according to your application logic
-    }
-  } catch (error) {
-    console.error("Error fetching merchant data:", error);
-    router.push("/404");
   }
 };
 

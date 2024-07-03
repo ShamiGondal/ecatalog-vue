@@ -216,7 +216,7 @@ const calculateMinMaxRegularPrice = (products) => {
 };
 
 const fetchmerchantData = async () => {
-  const url = `/ecatalog/merchant/superstore`;
+  const url = `/ecatalog/merchant/${name}`;
 
   try {
     // Make a request to the proxy server

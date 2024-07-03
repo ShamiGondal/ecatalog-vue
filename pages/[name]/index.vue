@@ -120,7 +120,7 @@ const handleModalOpened = (isOpen) => {
 };
 
 const fetchData = async () => {
-  const url = `/ecatalog/merchant/superstore`;
+  const url = `/ecatalog/merchant/${name}`;
   try {
     const response = await axios.get(url);
     dataSlideshows.value = response.data.slideshow;

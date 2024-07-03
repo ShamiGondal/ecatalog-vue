@@ -40,14 +40,14 @@
 
   
    const fetchmerchantData = async () => {
-  const url = `/ecatalog/merchant/superstore`;
+   const url = `/ecatalog/merchant/${name}`;
 
   try {
     // Make a request to the proxy server
     const response = await axios.get(url);
-    console.log(response);
+    console.log("data footer", response);
 
-    const merchant = response.data?.merchant;
+    const merchant = response.data.merchant;
 
     if (merchant) {
       email.value = merchant.merchant_email ? `mailto:${merchant.merchant_email}` : '';
